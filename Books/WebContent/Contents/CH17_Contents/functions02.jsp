@@ -13,4 +13,3 @@
 	<p><c:out value="${fn:join(texts, '-')}" />
 </body>
 </html>
-

@@ -14,12 +14,12 @@
 		String name = request.getParameter("name");
 	%>
 	<sql:setDataSource var="dataSource"
-		url="jdbc:mysql://localhost:3306/JSPBookDB"
+		url="jdbc:mysql://localhost:3306/WebMarketDB"
 		driver="com.mysql.jdbc.Driver" user="root" password="1234" />
 
 
 	<sql:update dataSource="${dataSource}" var="resultSet">
-		UPDATE member SET name =?  where id =? and passwd =?
+		UPDATE memberjsp SET name =? WHERE id =? and passwd =?
 		<sql:param value="<%=name%>" />
 		<sql:param value="<%=id%>" />		
 		<sql:param value="<%=passwd%>" />		
