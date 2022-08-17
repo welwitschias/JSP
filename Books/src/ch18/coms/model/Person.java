@@ -1,31 +1,8 @@
-package ch04.com.dao;
+package ch18.coms.model;
 
 public class Person {
-
-	private String id;
-	private int id2;
 	private String name;
 	private String email;
-
-	public Person() {
-
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	public int getId2() {
-		return id2;
-	}
-
-	public void setId2(int id2) {
-		this.id2 = id2;
-	}
 
 	public String getName() {
 		return name;
@@ -43,4 +20,15 @@ public class Person {
 		this.email = email;
 	}
 
+	@Override
+	public String toString() {
+		return "Person [name=" + name + ", email=" + email + "]";
+	}
+	
+	public boolean validate() {
+		if (name.equals("admin")) 
+			return true;
+		else
+			return false;		
+	}
 }

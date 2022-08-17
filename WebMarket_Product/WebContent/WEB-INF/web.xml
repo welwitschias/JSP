@@ -5,9 +5,9 @@
 		<role-name>manager</role-name>
 	</security-role>
 	<security-constraint>
-		<display-name>WebMarket_Final Security</display-name>
+		<display-name>WebMarket_Product Security</display-name>
 		<web-resource-collection>
-			<web-resource-name>WebMarket_Final</web-resource-name>
+			<web-resource-name>WebMarket_Product</web-resource-name>
 			<description></description>
 			<url-pattern>/addProduct.jsp</url-pattern>
 			<url-pattern>/editProduct.jsp</url-pattern>

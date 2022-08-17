@@ -8,7 +8,7 @@
 	<p>	아이디 : <%=person.getId()%>
 	<p>	이 름 : <%=person.getName()%>
 		<%
-			person.setId(20182005);
+			person.setId2(20182005);
 			person.setName("홍길동");
 		%>
 		<jsp:include page="useBean03.jsp"/>

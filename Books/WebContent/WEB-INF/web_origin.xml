@@ -33,11 +33,11 @@
 	
 	<servlet>
 		<servlet-name>myController</servlet-name>
- 		<servlet-class>ch18.coms.controller.MyController</servlet-class>
+ 		<servlet-class>ch18.com.controller.ControllerServlet</servlet-class>
  	</servlet>
  	<servlet-mapping>
 		 <servlet-name>myController</servlet-name>
- 		<url-pattern>/Contents/CH18_Ex/MyController</url-pattern>
+ 		<url-pattern>/Contents/CH18_Contents/ControllerServlet</url-pattern>
 	 </servlet-mapping>	
 	
 </web-app>

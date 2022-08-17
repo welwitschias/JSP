@@ -26,7 +26,7 @@
 				<li class="nav-item"><a class="nav-link" href="<c:url value="/addProduct_animal.jsp"/>">동물 등록</a></li>
 				<li class="nav-item"><a class="nav-link" href="<c:url value="/editProduct_animal.jsp?edit=update"/>">동물 수정</a></li>
 				<li class="nav-item"><a class="nav-link" href="<c:url value="/editProduct_animal.jsp?edit=delete"/>">동물 삭제</a></li>
-				<li class="nav-item"><a class="nav-link" href="<c:url value="/BoardListAction.do?pageNum=1"/>">게시판</a></li>
+				<li class="nav-item"><a class="nav-link" href="<c:url value="/BoardListAction.do?pageNum=1"/>">동물 게시판</a></li>
 			</ul>
 		</div>
 	</div>

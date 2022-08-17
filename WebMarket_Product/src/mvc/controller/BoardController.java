@@ -15,163 +15,175 @@ import mvc.model.BoardDTO;
 
 public class BoardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	static final int LISTCOUNT = 5; 
+	static final int LISTCOUNT = 5;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
+		String RequestURI = request.getRequestURI();
+		String contextPath = request.getContextPath();
+		String command = RequestURI.substring(contextPath.length());
+
+		response.setContentType("text/html; charset=utf-8");
+		request.setCharacterEncoding("utf-8");
+
+		if (command.equals("/BoardListAction.do")) {// ë“±ë¡ëœ ê¸€ ëª©ë¡ í˜ì´ì§€ ì¶œë ¥í•˜ê¸°
+			requestBoardList(request);
+			RequestDispatcher rd = request.getRequestDispatcher("./board/list.jsp");
+			rd.forward(request, response);
+		} else if (command.equals("/BoardWriteForm.do")) { // ê¸€ ë“±ë¡ í˜ì´ì§€ ì¶œë ¥í•˜ê¸°
+			requestLoginName(request);
+			RequestDispatcher rd = request.getRequestDispatcher("./board/writeForm.jsp");
+			rd.forward(request, response);
+		} else if (command.equals("/BoardWriteAction.do")) {// ìƒˆë¡œìš´ ê¸€ ë“±ë¡í•˜ê¸°
+			requestBoardWrite(request);
+			RequestDispatcher rd = request.getRequestDispatcher("/BoardListAction.do");
+			rd.forward(request, response);
+		} else if (command.equals("/BoardViewAction.do")) {// ì„ íƒëœ ê¸€ ìƒì„¸ í˜ì´ì§€ ê°€ì ¸ì˜¤ê¸°
+			requestBoardView(request);
+			RequestDispatcher rd = request.getRequestDispatcher("/BoardView.do");
+			rd.forward(request, response);
+		} else if (command.equals("/BoardView.do")) { // ê¸€ ìƒì„¸ í˜ì´ì§€ ì¶œë ¥í•˜ê¸°
+			RequestDispatcher rd = request.getRequestDispatcher("./board/view.jsp");
+			rd.forward(request, response);
+		} else if (command.equals("/BoardUpdateAction.do")) { // ì„ íƒëœ ê¸€ì˜ ì¡°íšŒìˆ˜ ì¦ê°€í•˜ê¸°
+			requestBoardUpdate(request);
+			RequestDispatcher rd = request.getRequestDispatcher("/BoardListAction.do");
+			rd.forward(request, response);
+		} else if (command.equals("/BoardDeleteAction.do")) { // ì„ íƒëœ ê¸€ ì‚­ì œí•˜ê¸°
+			requestBoardDelete(request);
+			RequestDispatcher rd = request.getRequestDispatcher("/BoardListAction.do");
+			rd.forward(request, response);
+		}
+	}
+
+	// ë“±ë¡ëœ ê¸€ ëª©ë¡ ê°€ì ¸ì˜¤ê¸°
+	public void requestBoardList(HttpServletRequest request) {
+
 		String RequestURI = request.getRequestURI();
 		String contextPath = request.getContextPath();
 		String command = RequestURI.substring(contextPath.length());
 		
-		response.setContentType("text/html; charset=utf-8");
-		request.setCharacterEncoding("utf-8");
-	
-		if (command.equals("/BoardListAction.do")) {//µî·ÏµÈ ±Û ¸ñ·Ï ÆäÀÌÁö Ãâ·ÂÇÏ±â
-			requestBoardList(request);
-			RequestDispatcher rd = request.getRequestDispatcher("./board/list.jsp");
-			rd.forward(request, response);
-		} else if (command.equals("/BoardWriteForm.do")) { // ±Û µî·Ï ÆäÀÌÁö Ãâ·ÂÇÏ±â
-				requestLoginName(request);
-				RequestDispatcher rd = request.getRequestDispatcher("./board/writeForm.jsp");
-				rd.forward(request, response);				
-		} else if (command.equals("/BoardWriteAction.do")) {// »õ·Î¿î ±Û µî·ÏÇÏ±â
-				requestBoardWrite(request);
-				RequestDispatcher rd = request.getRequestDispatcher("/BoardListAction.do");
-				rd.forward(request, response);						
-		} else if (command.equals("/BoardViewAction.do")) {//¼±ÅÃµÈ ±Û »ó¼¼ ÆäÀÌÁö °¡Á®¿À±â
-				requestBoardView(request);
-				RequestDispatcher rd = request.getRequestDispatcher("/BoardView.do");
-				rd.forward(request, response);						
-		} else if (command.equals("/BoardView.do")) { //±Û »ó¼¼ ÆäÀÌÁö Ãâ·ÂÇÏ±â
-				RequestDispatcher rd = request.getRequestDispatcher("./board/view.jsp");
-				rd.forward(request, response);	
-		} else if (command.equals("/BoardUpdateAction.do")) { //¼±ÅÃµÈ ±ÛÀÇ Á¶È¸¼ö Áõ°¡ÇÏ±â
-				requestBoardUpdate(request);
-				RequestDispatcher rd = request.getRequestDispatcher("/BoardListAction.do");
-				rd.forward(request, response);
-		}else if (command.equals("/BoardDeleteAction.do")) { //¼±ÅÃµÈ ±Û »èÁ¦ÇÏ±â
-				requestBoardDelete(request);
-				RequestDispatcher rd = request.getRequestDispatcher("/BoardListAction.do");
-				rd.forward(request, response);				
-		} 
-	}
-	//µî·ÏµÈ ±Û ¸ñ·Ï °¡Á®¿À±â	
-	public void requestBoardList(HttpServletRequest request){
-			
 		BoardDAO dao = BoardDAO.getInstance();
 		List<BoardDTO> boardlist = new ArrayList<BoardDTO>();
-		
-	  	int pageNum=1;
-		int limit=LISTCOUNT;
-		
-		if(request.getParameter("pageNum")!=null)
-			pageNum=Integer.parseInt(request.getParameter("pageNum"));
-				
+
+		int pageNum = 1;
+		int limit = LISTCOUNT;
+
+		if (request.getParameter("pageNum") != null)
+			pageNum = Integer.parseInt(request.getParameter("pageNum"));
+
 		String items = request.getParameter("items");
 		String text = request.getParameter("text");
-		
-		int total_record=dao.getListCount(items, text);
-		boardlist = dao.getBoardList(pageNum,limit, items, text); 
-		
+
+		int total_record = dao.getListCount(items, text);
+		boardlist = dao.getBoardList(pageNum, limit, items, text);
+
 		int total_page;
-		
-		if (total_record % limit == 0){     
-	     	total_page =total_record/limit;
-	     	Math.floor(total_page);  
+
+		if (total_record % limit == 0) {
+			total_page = total_record / limit;
+			Math.floor(total_page);
+		} else {
+			total_page = total_record / limit;
+			Math.floor(total_page);
+			total_page = total_page + 1;
 		}
-		else{
-		   total_page =total_record/limit;
-		   Math.floor(total_page); 
-		   total_page =  total_page + 1; 
-		}		
-   
-   		request.setAttribute("pageNum", pageNum);		  
-   		request.setAttribute("total_page", total_page);   
-		request.setAttribute("total_record",total_record); 
-		request.setAttribute("boardlist", boardlist);								
+
+		request.setAttribute("pageNum", pageNum);
+		request.setAttribute("total_page", total_page);
+		request.setAttribute("total_record", total_record);
+		request.setAttribute("boardlist", boardlist);
+		request.setAttribute("RequestURI", RequestURI);
+		request.setAttribute("contextPath", contextPath);
+		request.setAttribute("command", command);
 	}
-	//ÀÎÁõµÈ »ç¿ëÀÚ¸í °¡Á®¿À±â
-	public void requestLoginName(HttpServletRequest request){
-					
+
+	// ì¸ì¦ëœ ì‚¬ìš©ìëª… ê°€ì ¸ì˜¤ê¸°
+	public void requestLoginName(HttpServletRequest request) {
+
 		String id = request.getParameter("id");
-		
-		BoardDAO  dao = BoardDAO.getInstance();
-		
-		String name = dao.getLoginNameById(id);		
-		
-		request.setAttribute("name", name);									
+
+		BoardDAO dao = BoardDAO.getInstance();
+
+		String name = dao.getLoginNameById(id);
+
+		request.setAttribute("name", name);
 	}
-	// »õ·Î¿î ±Û µî·ÏÇÏ±â
-	public void requestBoardWrite(HttpServletRequest request){
-					
-		BoardDAO dao = BoardDAO.getInstance();		
-		
+
+	// ìƒˆë¡œìš´ ê¸€ ë“±ë¡í•˜ê¸°
+	public void requestBoardWrite(HttpServletRequest request) {
+
+		BoardDAO dao = BoardDAO.getInstance();
+
 		BoardDTO board = new BoardDTO();
 		board.setId(request.getParameter("id"));
 		board.setName(request.getParameter("name"));
 		board.setSubject(request.getParameter("subject"));
-		board.setContent(request.getParameter("content"));	
-		
+		board.setContent(request.getParameter("content"));
+
 		System.out.println(request.getParameter("name"));
 		System.out.println(request.getParameter("subject"));
 		System.out.println(request.getParameter("content"));
 		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy/MM/dd(HH:mm:ss)");
-		String regist_day = formatter.format(new java.util.Date()); 
-		
+		String regist_day = formatter.format(new java.util.Date());
+
 		board.setHit(0);
 		board.setRegist_day(regist_day);
-		board.setIp(request.getRemoteAddr());			
-		
-		dao.insertBoard(board);								
+		board.setIp(request.getRemoteAddr());
+
+		dao.insertBoard(board);
 	}
-	//¼±ÅÃµÈ ±Û »ó¼¼ ÆäÀÌÁö °¡Á®¿À±â
-	public void requestBoardView(HttpServletRequest request){
-					
+
+	// ì„ íƒëœ ê¸€ ìƒì„¸ í˜ì´ì§€ ê°€ì ¸ì˜¤ê¸°
+	public void requestBoardView(HttpServletRequest request) {
+
 		BoardDAO dao = BoardDAO.getInstance();
 		int num = Integer.parseInt(request.getParameter("num"));
-		int pageNum = Integer.parseInt(request.getParameter("pageNum"));	
-		
+		int pageNum = Integer.parseInt(request.getParameter("pageNum"));
+
 		BoardDTO board = new BoardDTO();
-		board = dao.getBoardByNum(num, pageNum);		
-		
-		request.setAttribute("num", num);		 
-   		request.setAttribute("page", pageNum); 
-   		request.setAttribute("board", board);   									
+		board = dao.getBoardByNum(num, pageNum);
+
+		request.setAttribute("num", num);
+		request.setAttribute("page", pageNum);
+		request.setAttribute("board", board);
 	}
-	//¼±ÅÃµÈ ±Û ³»¿ë ¼öÁ¤ÇÏ±â
-	public void requestBoardUpdate(HttpServletRequest request){
-					
+
+	// ì„ íƒëœ ê¸€ ë‚´ìš© ìˆ˜ì •í•˜ê¸°
+	public void requestBoardUpdate(HttpServletRequest request) {
+
 		int num = Integer.parseInt(request.getParameter("num"));
-		int pageNum = Integer.parseInt(request.getParameter("pageNum"));	
-		
-		BoardDAO dao = BoardDAO.getInstance();		
-		
-		BoardDTO board = new BoardDTO();		
+		int pageNum = Integer.parseInt(request.getParameter("pageNum"));
+
+		BoardDAO dao = BoardDAO.getInstance();
+
+		BoardDTO board = new BoardDTO();
 		board.setNum(num);
 		board.setName(request.getParameter("name"));
 		board.setSubject(request.getParameter("subject"));
-		board.setContent(request.getParameter("content"));		
-		
-		 java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy/MM/dd(HH:mm:ss)");
-		 String regist_day = formatter.format(new java.util.Date()); 
-		 
-		 board.setHit(0);
-		 board.setRegist_day(regist_day);
-		 board.setIp(request.getRemoteAddr());			
-		
-		 dao.updateBoard(board);								
+		board.setContent(request.getParameter("content"));
+
+		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy/MM/dd(HH:mm:ss)");
+		String regist_day = formatter.format(new java.util.Date());
+
+		board.setHit(0);
+		board.setRegist_day(regist_day);
+		board.setIp(request.getRemoteAddr());
+
+		dao.updateBoard(board);
 	}
-	//¼±ÅÃµÈ ±Û »èÁ¦ÇÏ±â
-	public void requestBoardDelete(HttpServletRequest request){
-					
+
+	// ì„ íƒëœ ê¸€ ì‚­ì œí•˜ê¸°
+	public void requestBoardDelete(HttpServletRequest request) {
+
 		int num = Integer.parseInt(request.getParameter("num"));
-		int pageNum = Integer.parseInt(request.getParameter("pageNum"));	
-		
+		int pageNum = Integer.parseInt(request.getParameter("pageNum"));
+
 		BoardDAO dao = BoardDAO.getInstance();
-		dao.deleteBoard(num);							
-	}	
+		dao.deleteBoard(num);
+	}
 }

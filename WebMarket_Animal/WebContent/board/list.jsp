@@ -13,15 +13,14 @@
 <html>
 <head>
 <link rel="stylesheet" href="./resources/css/bootstrap.min.css" />
-<title>Board</title>
+<title>Animal Board</title>
 <script type="text/javascript">
 	function checkForm() {	
 		if (${sessionId==null}) {
 			alert("로그인 해주세요.");
 			return false;
-		}
-
-		location.href = "./BoardWriteForm.do?id=<%=sessionId%>"
+		} else
+			location.href = "./BoardWriteForm.do?id=<%=sessionId%>"
 	}
 </script>
 </head>
@@ -29,7 +28,7 @@
 	<jsp:include page="../menu_animal.jsp" />
 	<div class="jumbotron">
 		<div class="container">
-			<h1 class="display-3">게시판</h1>
+			<h1 class="display-3">동물 게시판</h1>
 		</div>
 	</div>
 	<div class="container">
@@ -44,10 +43,9 @@
 				<table class="table table-hover">
 					<tr>
 						<th>번호</th>
-						<th>제목</th>
-						<th>작성일</th>
-						<th>조회</th>
-						<th>글쓴이</th>
+						<th>아이디</th>
+						<th>이름</th>
+						<th>나이</th>
 					</tr>
 					<%
 					for (int j = 0; j < boardList.size(); j++) {
@@ -56,11 +54,10 @@
 					<tr>
 						<td><%=notice.getNum()%></td>
 						<td>
-							<a href="./BoardViewAction.do?num=<%=notice.getNum()%>&pageNum=<%=pageNum%>"><%=notice.getSubject()%></a>
+							<a href="./BoardViewAction.do?num=<%=notice.getNum()%>&pageNum=<%=pageNum%>"><%=notice.getId()%></a>
 						</td>
-						<td><%=notice.getRegist_day()%></td>
-						<td><%=notice.getHit()%></td>
 						<td><%=notice.getName()%></td>
+						<td><%=notice.getAge()%></td>
 					</tr>
 					<%
 						}

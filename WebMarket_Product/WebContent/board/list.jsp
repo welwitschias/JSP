@@ -8,6 +8,9 @@
 	int total_record = ((Integer) request.getAttribute("total_record")).intValue();
 	int pageNum = ((Integer) request.getAttribute("pageNum")).intValue();
 	int total_page = ((Integer) request.getAttribute("total_page")).intValue();
+	String RequestURI = (String) request.getAttribute("RequestURI");
+	String contextPath = (String) request.getAttribute("contextPath");
+	String command = (String) request.getAttribute("command");
 %>
 <html>
 <head>
@@ -18,9 +21,8 @@
 		if (${sessionId==null}) {
 			alert("로그인 해주세요.");
 			return false;
-		}
-
-		location.href = "./BoardWriteForm.do?id=<%=sessionId%>"
+		} else
+			location.href = "./BoardWriteForm.do?id=<%=sessionId%>"
 	}
 </script>
 </head>
@@ -31,6 +33,12 @@
 			<h1 class="display-3">게시판</h1>
 		</div>
 	</div>
+<%-- 	<h4>total_record : <%=total_record%></h4>
+	<h4>pageNum : <%=pageNum%></h4>
+	<h4>total_page : <%=total_page%></h4>
+	<h4>RequestURI : <%=RequestURI%></h4>
+	<h4>contextPath : <%=contextPath%></h4>
+	<h4>command : <%=command%></h4> --%>
 	<div class="container">
 		<form action="<c:url value="./BoardListAction.do"/>" method="post">
 			<div>

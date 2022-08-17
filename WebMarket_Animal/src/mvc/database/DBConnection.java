@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 public class DBConnection {
 
 	public static Connection getConnection() throws SQLException, ClassNotFoundException {
+
 		Connection conn = null;
 
 		String url = "jdbc:mysql://localhost:3306/WebMarketDB";

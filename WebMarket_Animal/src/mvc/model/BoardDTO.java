@@ -4,14 +4,10 @@ public class BoardDTO {
 	private int num;
 	private String id;
 	private String name;
-	private String subject;
-	private String content;
-	private String regist_day;
-	private int hit;
-	private String ip;
+	private int age;
 
 	public BoardDTO() {
-		super();
+		super();		
 	}
 
 	public int getNum() {
@@ -38,44 +34,12 @@ public class BoardDTO {
 		this.name = name;
 	}
 
-	public String getSubject() {
-		return subject;
+	public int getAge() {
+		return age;
 	}
 
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public String getRegist_day() {
-		return regist_day;
-	}
-
-	public void setRegist_day(String regist_day) {
-		this.regist_day = regist_day;
-	}
-
-	public int getHit() {
-		return hit;
-	}
-
-	public void setHit(int hit) {
-		this.hit = hit;
-	}
-
-	public String getIp() {
-		return ip;
-	}
-
-	public void setIp(String ip) {
-		this.ip = ip;
+	public void setAge(int age) {
+		this.age = age;
 	}
 
 }
