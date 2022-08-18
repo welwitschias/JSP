@@ -122,7 +122,7 @@ public class BoardDAO {
 		ResultSet rs = null;
 
 		String name = null;
-		String sql = "select * from animalMember where id = ? ";
+		String sql = "SELECT * FROM animalMember WHERE id = ? ";
 
 		try {
 			conn = DBConnection.getConnection();
@@ -159,13 +159,12 @@ public class BoardDAO {
 		try {
 			conn = DBConnection.getConnection();
 
-			String sql = "insert into animal2 values(?, ?, ?, ?)";
+			String sql = "INSERT INTO animal2(id, name, age) VALUES(?, ?, ?)";
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, board.getNum());
-			pstmt.setString(2, board.getId());
-			pstmt.setString(3, board.getName());
-			pstmt.setInt(4, board.getAge());
+			pstmt.setString(1, board.getId());
+			pstmt.setString(2, board.getName());
+			pstmt.setInt(3, board.getAge());
 
 			pstmt.executeUpdate();
 		} catch (Exception ex) {
@@ -182,29 +181,6 @@ public class BoardDAO {
 		}
 	}
 
-	// 선택된 글의 조회수 증가하기
-	/*
-	 * public void updateHit(int num) {
-	 * 
-	 * Connection conn = null; PreparedStatement pstmt = null; ResultSet rs = null;
-	 * 
-	 * try { conn = DBConnection.getConnection();
-	 * 
-	 * String sql = "select hit from board where num = ? "; pstmt =
-	 * conn.prepareStatement(sql); pstmt.setInt(1, num); rs = pstmt.executeQuery();
-	 * int hit = 0;
-	 * 
-	 * if (rs.next()) hit = rs.getInt("hit") + 1;
-	 * 
-	 * sql = "update board set hit=? where num=?"; pstmt =
-	 * conn.prepareStatement(sql); pstmt.setInt(1, hit); pstmt.setInt(2, num);
-	 * pstmt.executeUpdate(); } catch (Exception ex) {
-	 * System.out.println("updateHit() 에러 : " + ex); } finally { try { if (rs !=
-	 * null) rs.close(); if (pstmt != null) pstmt.close(); if (conn != null)
-	 * conn.close(); } catch (Exception ex) { throw new
-	 * RuntimeException(ex.getMessage()); } } }
-	 */
-
 	// 선택된 글 상세 내용 가져오기
 	public BoardDTO getBoardByNum(int num, int page) {
 		Connection conn = null;
@@ -212,8 +188,7 @@ public class BoardDAO {
 		ResultSet rs = null;
 		BoardDTO board = null;
 
-		/* updateHit(num); */
-		String sql = "select * from animal2 where num = ? ";
+		String sql = "SELECT * FROM animal2 WHERE num = ? ";
 
 		try {
 			conn = DBConnection.getConnection();
@@ -248,35 +223,47 @@ public class BoardDAO {
 	}
 
 	// 선택된 글 내용 수정하기
-	/*
-	 * public void updateBoard(BoardDTO board) {
-	 * 
-	 * Connection conn = null; PreparedStatement pstmt = null;
-	 * 
-	 * try { String sql =
-	 * "update animal2 set name=?, subject=?, content=? where num=?";
-	 * 
-	 * conn = DBConnection.getConnection(); pstmt = conn.prepareStatement(sql);
-	 * 
-	 * conn.setAutoCommit(false);
-	 * 
-	 * pstmt.setString(1, board.getName()); pstmt.setString(2, board.getSubject());
-	 * pstmt.setString(3, board.getContent()); pstmt.setInt(4, board.getNum());
-	 * 
-	 * pstmt.executeUpdate(); conn.commit();
-	 * 
-	 * } catch (Exception ex) { System.out.println("updateBoard() 에러 : " + ex); }
-	 * finally { try { if (pstmt != null) pstmt.close(); if (conn != null)
-	 * conn.close(); } catch (Exception ex) { throw new
-	 * RuntimeException(ex.getMessage()); } } }
-	 */
+	public void updateBoard(BoardDTO board) {
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			String sql = "UPDATE animal2 SET id=?, name=?, age=? WHERE num=?";
+
+			conn = DBConnection.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			conn.setAutoCommit(false);
+
+			pstmt.setString(1, board.getId());
+			pstmt.setString(2, board.getName());
+			pstmt.setInt(3, board.getAge());
+			pstmt.setInt(4, board.getNum());
+
+			pstmt.executeUpdate();
+			conn.commit();
+
+		} catch (Exception ex) {
+			System.out.println("updateBoard() 에러 : " + ex);
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception ex) {
+				throw new RuntimeException(ex.getMessage());
+			}
+		}
+	}
 
 	// 선택된 글 삭제하기
 	public void deleteBoard(int num) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
-		String sql = "delete from animal2 where num=?";
+		String sql = "DELETE FROM animal2 WHERE num=?";
 
 		try {
 			conn = DBConnection.getConnection();

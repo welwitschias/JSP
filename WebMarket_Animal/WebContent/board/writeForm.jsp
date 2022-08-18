@@ -7,20 +7,20 @@
 <html>
 <head>
 <link rel="stylesheet" href="./resources/css/bootstrap.min.css" />
-<title>Board</title>
+<title>Animal Board</title>
 </head>
 <script type="text/javascript">
 	function checkForm() {
-		if (!document.newWrite.name.value) {
-			alert("성명을 입력하세요.");
+		if (!document.newWrite.animalId.value) {
+			alert("아이디를 입력하세요.");
 			return false;
 		}
-		if (!document.newWrite.subject.value) {
-			alert("제목을 입력하세요.");
+		if (!document.newWrite.animalName.value) {
+			alert("이름을 입력하세요.");
 			return false;
 		}
-		if (!document.newWrite.content.value) {
-			alert("내용을 입력하세요.");
+		if (!document.newWrite.animalAge.value) {
+			alert("나이를 입력하세요.");
 			return false;
 		}
 	}
@@ -29,28 +29,28 @@
 	<jsp:include page="../menu_animal.jsp" />
 	<div class="jumbotron">
 		<div class="container">
-			<h1 class="display-3">게시판</h1>
+			<h1 class="display-3">동물 게시판</h1>
 		</div>
 	</div>
 	<div class="container">
 		<form name="newWrite" action="./BoardWriteAction.do" class="form-horizontal" method="post" onsubmit="return checkForm()">
 			<input name="id" type="hidden" class="form-control" value="${sessionId}">
 			<div class="form-group row">
-				<label class="col-sm-2 control-label">성명</label>
-				<div class="col-sm-3">
-					<input name="name" type="text" class="form-control" value="<%=name%>" placeholder="name">
-				</div>
-			</div>
-			<div class="form-group row">
-				<label class="col-sm-2 control-label">제목</label>
+				<label class="col-sm-2 control-label">아이디</label>
 				<div class="col-sm-5">
-					<input name="subject" type="text" class="form-control" placeholder="subject">
+					<input name="animalId" type="text" class="form-control" placeholder="아이디를 입력하세요.">
 				</div>
 			</div>
 			<div class="form-group row">
-				<label class="col-sm-2 control-label">내용</label>
-				<div class="col-sm-8">
-					<textarea name="content" cols="50" rows="5" class="form-control" placeholder="content"></textarea>
+				<label class="col-sm-2 control-label">이름</label>
+				<div class="col-sm-5">
+					<input name="animalName" type="text" class="form-control" placeholder="이름을 입력하세요.">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-sm-2 control-label">나이</label>
+				<div class="col-sm-5">
+					<input name="animalAge" type="text" class="form-control" placeholder="나이를 입력하세요.">
 				</div>
 			</div>
 			<div class="form-group row">
